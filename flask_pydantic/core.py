@@ -167,9 +167,7 @@ def validate(
         @wraps(func)
         def wrapper(*args, **kwargs):
             q, b, f, err = None, None, None, {}
-            kwargs, path_err = validate_path_params(func, kwargs)
-            if path_err:
-                err["path_params"] = path_err
+
             query_in_kwargs = func.__annotations__.get("query")
             query_model = query_in_kwargs or query
             if query_model:
@@ -245,8 +243,7 @@ def validate(
                         "FLASK_PYDANTIC_VALIDATION_ERROR_STATUS_CODE", 400
                     )
                     return make_response(
-                        jsonify({"validation_error": err}),
-                        status_code
+                        jsonify({"validation_error": err}), status_code
                     )
             res = func(*args, **kwargs)
 
